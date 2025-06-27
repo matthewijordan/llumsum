@@ -1,0 +1,6 @@
+hash: 1f09aba8fcad19452eeac47dae17dccb3461734e
+
+This module defines a system prompt used to instruct a language model about its role in summarizing source code files.
+- Exports `SYSTEM_PROMPT`, a constant string containing the detailed instructions for the AI.
+- This prompt guides the AI to generate concise, development-focused summaries, akin to how a human developer would describe a file.
+- It emphasizes key aspects like purpose, exports, high-level flow, and interactions with other project files.

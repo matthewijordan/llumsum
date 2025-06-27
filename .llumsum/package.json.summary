@@ -1,0 +1,9 @@
+hash: 437d67d2849f139f7a220772f83a47472c66c112
+
+This file is the project manifest for the `llumsum` JavaScript package.
+
+- Defines core metadata like `name`, `version`, and `description`.
+- Specifies the main entry point for the library (`dist/index.js`) and the executable for the CLI (`dist/cli/index.js`).
+- Includes standard script definitions for `test` and `build`.
+- Lists runtime dependencies, notably `@langchain/openai`, `commander`, `dotenv`, `glob`, `langchain`, and `p-limit`. These indicate the project likely involves AI/LLM operations, command-line parsing, environment variable loading, file system operations, and concurrency control.
+- Lists development dependencies like `typescript` and `@types/glob`, indicating the project is written in TypeScript.

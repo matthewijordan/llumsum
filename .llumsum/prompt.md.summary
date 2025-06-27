@@ -1,0 +1,8 @@
+hash: 3e08c5c3f7d0bb70b9b3c725f8a420fcccbaf935
+
+This file contains the prompt instructions for an AI model tasked with summarizing source code files.
+- It specifies the persona for the AI (senior software engineer).
+- It outlines the goal of the summary (high-level, concise, useful).
+- It lists the intended uses of the summary (understanding purpose, knowing exports, grasping flow, navigation).
+- It provides formatting guidelines (natural language, no line numbers, language-agnostic).
+- It includes three concrete examples of how a good summary should be structured and what kind of information it should contain.

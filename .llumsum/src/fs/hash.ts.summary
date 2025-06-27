@@ -1,0 +1,6 @@
+hash: 087c632b76d1b7bfdb0b689c7fa0281d3b5a38ca
+
+This module provides a utility for calculating the SHA-1 hash of a given file.
+- Exports a single asynchronous function, `getFileHash(filePath)`, which takes a file path and returns a Promise that resolves with the hexadecimal SHA-1 hash of the file's content.
+- It uses Node.js's built-in `crypto` and `fs` modules to create a readable stream from the file and pipe its data through a SHA-1 hasher.
+- This is useful for file integrity checks or as part of a caching mechanism.

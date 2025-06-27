@@ -1,0 +1,7 @@
+hash: 7e92a8eb5333b83c372c9773582b2a2775a54d58
+
+This module defines functions for mapping between source file paths and their corresponding summary file paths within a project's `.llumsum` directory.
+- Exports `getSummaryPath(projectRoot, sourcePath)` which takes a project root and a source file path, and returns the path to its associated summary file in the `.llumsum` directory.
+- Exports `getSourcePath(projectRoot, summaryPath)` which performs the reverse operation, taking a project root and a summary file path, and returning the original source file path.
+- Primarily used internally by other modules that need to locate or create summary files.
+- Relies on the Node.js `path` module for path manipulation.

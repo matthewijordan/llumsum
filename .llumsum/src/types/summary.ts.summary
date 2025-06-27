@@ -1,0 +1,5 @@
+hash: ab742dee8956f64ff363c2a774fe1a0d5ca6dfa7
+
+This file defines TypeScript interfaces for representing and reporting on code summaries.
+- Exports `Summary`, an interface for basic code summaries, including the file path, an optional hash, and the summary text itself.
+- Exports `SummaryResult`, which extends `Summary` by adding a status ('fresh', 'stale', or 'new') to indicate the summary's recency or generation state, and an optional field for tracking token usage from language models.

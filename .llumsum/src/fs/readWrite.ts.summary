@@ -1,0 +1,9 @@
+hash: 4839456b8109611f4b7a379b8a0293d0a9bd6a9b
+
+This module provides utilities for reading from and writing to special "summary" files.
+- Exports an interface `SummaryFile` defining the structure of the data stored in a summary file (a file hash and the summary text itself).
+- Exports `readSummary(summaryPath)` which reads a summary file, parses its content into a `SummaryFile` object, or returns `null` if the file doesn't exist.
+- Exports `writeSummary(summaryPath, summary)` which takes a `SummaryFile` object, formats it, and writes it to the specified path, creating necessary directories.
+- Interacts with the `fs/promises` module for file system operations and `path` for path manipulation.
+- Uses `getSummaryPath` from `layout.js` (though not directly called in the exported functions, it suggests how `summaryPath` might be derived).
+- Uses `getFileHash` from `hash.js` (similarly, not directly called here, but implied as the source of the `hash` in `SummaryFile`).

@@ -1,0 +1,11 @@
+hash: 28b06363932180431bca33cf7ceaa20efc6c2588
+
+This module provides functionality for generating code summaries using a large language model (LLM).
+
+- It exports two asynchronous functions:
+    - `initializeLLM()`: Responsible for loading configuration, validating LLM API key, model name, and base URL, and then initializing the `ChatOpenAI` model instance. This function needs to be called before `generateSummaryWithLLM`.
+    - `generateSummaryWithLLM(filePath, fileContent)`: Takes a file path and its content, constructs a prompt using a predefined system prompt, invokes the initialized LLM to generate a summary, and returns the summary string along with token usage information. If the LLM has not been initialized, it calls `initializeLLM()` internally.
+
+- It uses external dependencies from the `@langchain/openai` and `@langchain/core/messages` libraries for LLM interaction and message handling.
+- It relies on configuration loading from `../config.js` to retrieve LLM settings (API key, model, base URL) from `config.json`, `personal_config.json`, or environment variables.
+- It imports `SYSTEM_PROMPT` from `./prompt.js` to define the behavioral context for the LLM.

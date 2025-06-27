@@ -1,0 +1,13 @@
+{
+  "syncConfirmationThreshold": 50,
+  "ignorePatterns": [
+    "node_modules/**",
+    ".git/**",
+    ".llumsum/**",
+    "dist/**",
+    "temp/**",
+    "package-lock.json"
+  ],
+  "llmModel": "google/gemini-2.5-flash",
+  "llmApiBase": "https://openrouter.ai/api/v1"
+}

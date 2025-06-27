@@ -1,0 +1,15 @@
+hash: 63707bb4aed02c8ab7832dae91e7924280979fe5
+
+This module provides a command-line interface for managing and generating code summaries for a project.
+- It uses `commander` for CLI argument parsing.
+- Defines three main commands:
+    - `get-summary <filePath>`: Retrieves or generates a summary for a single file. If the file is outside the current project, it generates a transient summary without saving it.
+    - `save-summary <filePath>`: Reads or generates a summary for a single file and ensures it's saved within the project's summary storage.
+    - `sync`: Synchronizes all summaries in the project. It identifies stale summaries (or all if `force` option is used) and regenerates them. It also removes any "orphan" summaries that no longer correspond to existing source files. This command includes a confirmation prompt for large numbers of files to manage potential LLM costs and reports token usage.
+- Utilizes `glob` for file system traversal and `p-limit` to control the concurrency of summary generation (which often involves external LLM calls).
+- Interacts with core summarization logic, file system layout utilities, and configuration loading.
+
+This file directly interacts with:
+- `../index.js`: Imports `readOrGenerateSummary`, `isStale`, and `generateTransientSummary`.
+- `../fs/layout.js`: Imports `getSourcePath`.
+- `../config.js`: Imports `loadConfig`.

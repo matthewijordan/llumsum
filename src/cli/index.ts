@@ -6,20 +6,10 @@ import * as path from 'path';
 import pLimit from 'p-limit';
 import { getSourcePath } from '../fs/layout.js';
 import * as fs from 'fs/promises';
+import { loadConfig } from '../config.js';
 
 const program = new Command();
 const projectRoot = process.cwd();
-
-const DEFAULT_IGNORE_PATTERNS = [
-  'node_modules/**',
-  '.git/**',
-  '.llumsum/**',
-  'dist/**',
-  'temp/**',
-  'package-lock.json',
-];
-
-const SYNC_CONFIRMATION_THRESHOLD = 50;
 
 function isWithinProject(filePath: string): boolean {
   const resolvedPath = path.resolve(filePath);
@@ -62,11 +52,13 @@ program
     .action(async (options) => {
         console.log('Starting sync...');
 
+        const config = await loadConfig();
+
         let totalPromptTokens = 0;
         let totalCompletionTokens = 0;
         let totalTotalTokens = 0;
 
-        const allFiles = await glob('**/*', { nodir: true, ignore: DEFAULT_IGNORE_PATTERNS });
+        const allFiles = await glob('**/*', { nodir: true, ignore: config.ignorePatterns });
         const filesToSummarize: string[] = [];
 
         for (const file of allFiles) {
@@ -76,7 +68,7 @@ program
             }
         }
 
-        if (filesToSummarize.length > SYNC_CONFIRMATION_THRESHOLD) {
+        if (filesToSummarize.length > config.syncConfirmationThreshold) {
             const answer = await new Promise<string>((resolve) => {
                 process.stdout.write(`\n${filesToSummarize.length} files need summarization. This may incur LLM costs.\nDo you want to proceed? (y/N): `);
                 process.stdin.once('data', (data) => {
@@ -90,7 +82,7 @@ program
             }
         }
 
-        const limit = pLimit(5); // Limit to 5 concurrent LLM calls
+        const limit = pLimit(config.parallelism || 8); // Limit concurrent LLM calls
         const summaryPromises = filesToSummarize.map((filePath) =>
             limit(async () => {
                 const relativePath = path.relative(projectRoot, filePath);

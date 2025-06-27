@@ -1,0 +1,20 @@
+hash: 578f64b4ae642870a1af8a3068f14c4977b8626f
+
+This `README.md` file provides a high-level overview and design document for `llumsum`, an LLM-powered codebase summarization tool.
+
+It describes:
+- **Purpose**: A lightweight, language-agnostic tool to create and maintain high-level, human-readable summaries of source code files using LLMs. These summaries are stored alongside the project in a hidden `.llumsum/` directory, mirroring the source tree.
+- **Motivation**: To address LLM context limitations and enable more efficient AI coding assistants by providing structured file summaries instead of raw code.
+- **Intended Use Cases**: CLI-based LLM assistants, multi-agent systems, developer productivity tools, and offline/background summarization.
+- **Architecture**: Summaries are stored in `.summary` files within a `.llumsum/` mirror of the project, each containing a content hash and an LLM-generated natural language summary.
+- **Key Components**:
+    - **File Mirroring Layer**: Manages the `.llumsum/` directory structure.
+    - **Summary Format**: Defines the structure of `.summary` files (hash + natural language).
+    - **LLM Summarizer**: Utilizes LangChain for LLM integration, with a flexible configuration hierarchy for API keys and model parameters.
+    - **Hashing & Sync Logic**: Detects stale summaries using content hashes and manages regeneration.
+    - **Public API Surface**: Defines core functions like `readOrGenerateSummary`, `generateSummary`, `readSummaryFile`, and `isStale`.
+- **CLI Interface**: Details commands for `sync`, `save-summary`, and `get-summary`.
+- **Configuration**: Explains project-specific settings in `.llumsum/project.config.json` (e.g., ignore patterns, LLM model) and personal settings in `.llumsum/personal.config.json` (for sensitive API keys).
+- **Design Principles**: Emphasizes encapsulation, statelessness, composability, extensibility, and provider-agnosticism.
+
+This file acts as the primary design specification and user guide for `llumsum`, outlining its conceptual model, core components, and intended usage. It does not directly interact with other project files but defines the structure and interaction patterns for the `llumsum` codebase itself.

@@ -1,0 +1,10 @@
+hash: cf7e17b312be150c5224f74246c9ed21c848f4a6
+
+This module manages application configuration, loading settings from project-specific and personal user files.
+
+- Defines `LlumsumConfig` interface for project-level settings (e.g., sync thresholds, ignore patterns, LLM details) and `PersonalConfig` for sensitive user settings (e.g., LLM API keys).
+- Exports `DEFAULT_CONFIG`, providing base values for `LlumsumConfig`.
+- Exports `loadConfig()`, an async function that reads and merges a project's `project.config.json` with default settings. If the file doesn't exist, it creates it with defaults.
+- Exports `loadPersonalConfig()`, an async function that reads a user's `personal.config.json` for sensitive data. It returns an empty object if the file is not found.
+- Interacts with the file system (`fs/promises`) and path utilities.
+- Expected to be used by other parts of the application that require configuration, especially for LLM interactions.

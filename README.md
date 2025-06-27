@@ -62,7 +62,8 @@ packages/llumsum/
 │   │   └── index.ts              // Optional CLI integration
 │   └── types/
 │       └── summary.ts            // Type definitions
-├── .env                         // Optional, for model/backend config
+├── .llumsum/project.config.json // Project-specific configuration
+├── .llumsum/personal.config.json // Personal configuration (ignored by Git)
 └── package.json
 ```
 
@@ -88,10 +89,14 @@ packages/llumsum/
 ### 3. **LLM Summarizer (LangChain-based)**
 
 * Abstracted LangChain `Runnable` chain for prompt + model interaction
-* Model and prompt templates driven via environment variables:
+* LLM configuration is determined by the following hierarchy (first one found is used):
+    1.  `llmApiKey` in `.llumsum/personal.config.json`
+    2.  `llmApiKey` in `.llumsum/project.config.json`
+    3.  `LLMSUM_OPENAI_API_KEY` environment variable
 
-  * e.g. `LLM_PROVIDER=openai`, `LLM_MODEL=gpt-4-turbo`
-* Auto-selection of appropriate chain (streaming, retry, etc.) based on config
+* Other LLM parameters (`llmModel`, `llmApiBase`) are determined by:
+    1.  `.llumsum/project.config.json`
+    2.  `LLMSUM_LLM_MODEL` / `LLMSUM_OPENAI_API_BASE` environment variables
 
 ### 4. **Hashing & Sync Logic**
 
@@ -117,33 +122,69 @@ isStale(filePath: string): Promise<boolean>
 
 ---
 
-## 🖥️ CLI Interface (Optional)
+## 🖥️ CLI Interface
 
 ```bash
-llumsum sync               # Regenerates stale summaries
-llumsum summary path.ts    # Reads or generates a single summary
-llumsum clean              # Removes orphan summaries
+llumsum sync [--force]     # Regenerates stale summaries, removes orphan ones, and tracks token usage. Use --force to regenerate all.
+llumsum save-summary path.ts # Reads or generates a single summary and saves it.
+llumsum get-summary path.ts  # Gets a summary for a single file. Generates if needed. Does not save if outside project.
 ```
+
+---
+
+## ⚙️ Configuration
+
+Project-specific configuration is managed in `.llumsum/project.config.json`. If this file does not exist, it will be created with default values.
+
+```json
+{
+  "syncConfirmationThreshold": 50,
+  "ignorePatterns": [
+    "node_modules/**",
+    ".git/**",
+    ".llumsum/**",
+    "dist/**",
+    "temp/**",
+    "package-lock.json"
+  ],
+  "llmModel": "google/gemini-2.5-flash",
+  "llmApiBase": "https://openrouter.ai/api/v1"
+}
+```
+
+*   `syncConfirmationThreshold`: (number) The maximum number of files that can be summarized during a `sync` operation before a user confirmation prompt is displayed. Defaults to `50`.
+*   `ignorePatterns`: (array of strings) A list of glob patterns for files and directories to ignore during `sync` operations. Summaries will not be generated for these files, and they will not trigger confirmation prompts. Defaults to common development artifacts.
+*   `llmModel`: (string) The specific LLM model to use for summarization (e.g., `gpt-4-turbo`, `anthropic/claude-3-haiku`).
+*   `llmApiBase`: (string) The base URL for the LLM API (e.g., `https://api.openai.com/v1`, `https://openrouter.ai/api/v1`).
+*   `parallelism`: (number) The maximum number of concurrent LLM calls to make during a `sync` operation. Defaults to `8`.
+
+Personal configuration, primarily for sensitive API keys, is managed in `.llumsum/personal.config.json`. This file should **not** be committed to version control.
+
+```json
+{
+  "llmApiKey": "your_llm_api_key"
+}
+```
+
+*   `llmApiKey`: (string) Your API key for the OpenAI-compatible LLM provider.
 
 ---
 
 ## 🔐 Design Principles
 
-* **Encapsulation**: Filesystem logic, LangChain config, and summary format are separated
-* **Stateless Core**: Summary logic is deterministic and easy to run in CI, watch loops, or remote agents
-* **Composable**: Designed for direct use in CLI tools, LLM orchestrators, or background services
-* **Extensible**: Support for multiple summary styles (e.g. docstring-only, full workflow) in future
-* **Provider-Agnostic**: Supports any LangChain-compatible model; selection is fully externalized
+*   **Encapsulation**: Filesystem logic, LangChain config, and summary format are separated.
+*   **Stateless Core**: Summary logic is deterministic and easy to run in CI, watch loops, or remote agents.
+*   **Composable**: Designed for direct use in CLI tools, LLM orchestrators, or background services.
+*   **Extensible**: Support for multiple summary styles (e.g. docstring-only, full workflow) in future.
+*   **Provider-Agnostic**: Supports any LangChain-compatible model; selection is fully externalized.
 
 ---
 
 ## 🌱 Future Considerations
 
-* Summary caching/indexing (e.g. `.llumsum/manifest.json`)
-* Git integration: generate summaries on diffs or pre-commit
-* Language-aware extensions (e.g. function signature detection from AST)
-* Custom prompt styles per project/language
+*   Summary caching/indexing (e.g. `.llumsum/manifest.json`)
+*   Git integration: generate summaries on diffs or pre-commit
+*   Language-aware extensions (e.g. function signature detection from AST)
+*   Custom prompt styles per project/language
 
 ---
-
-Let me know if you'd like this written up as a Markdown `README.md` or `DESIGN.md` for your repo.

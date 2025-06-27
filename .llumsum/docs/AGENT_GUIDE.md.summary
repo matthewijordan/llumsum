@@ -1,0 +1,7 @@
+hash: bb9e73e95ba561842ef69b37c9d91212296c9cd9
+
+This document serves as a guide for AI agents interacting with a codebase that uses the `.llumsum` summarization system.
+- It explains the purpose and structure of `.llumsum` files, which contain high-level summaries of source code files.
+- Each `.summary` file mirrors the project's source structure, includes a content hash, and provides a natural language overview of a source file's purpose, exports, workflows, and interactions with other project files.
+- The guide instructs agents on how to locate and utilize these summaries to quickly understand file relevance, content, and dependencies, overcoming context window limitations.
+- It outlines an example workflow for an AI agent using a summary to prioritize investigations and understand a file's role.

@@ -1,4 +1,4 @@
 node_modules
 dist
 .env
-.llumsum
+.llumsum/personal.config.json

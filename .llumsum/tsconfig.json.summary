@@ -1,0 +1,13 @@
+hash: fab26c92382d9b9222864e2a8547f417a1bc3e0a
+
+This file configures the TypeScript compiler for the project.
+
+- Defines `compilerOptions` for how TypeScript code should be transpiled.
+    - Sets the target JavaScript version to ES2022.
+    - Specifies `NodeNext` for module generation and resolution.
+    - Configures output directory (`dist`) and root source directory (`src`).
+    - Enables strict type checking and ES module interop.
+    - Includes settings for skipping library type checks and enforcing consistent casing.
+    - Sets up path aliases, mapping `*` to `src/*`.
+- Specifies `include` to restrict compilation to files within the `src` directory.
+- Specifies `exclude` to ignore `node_modules` and the `dist` output directory during compilation.

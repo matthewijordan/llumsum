@@ -1,0 +1,19 @@
+hash: 1b1d834344ae10a7f64161106a6ee83c9c88103e
+
+This module provides core functionalities for managing and generating summaries of files, primarily leveraging Large Language Models (LLMs) and a local cache.
+
+- **`readOrGenerateSummary(filePath, force)`**: The main entry point. It attempts to read an existing summary from a cache. If the summary is fresh (hash matches the file content), it returns the cached version. Otherwise, it generates a new summary using an LLM, caches it, and returns the new summary. The `force` flag bypasses the cache check.
+- **`generateSummary(filePath)`**: Forces the generation of a new summary for a given file using an LLM, overwriting any existing cached summary.
+- **`readSummaryFile(filePath)`**: Reads a summary from the cache for a given file and returns it along with its freshness status (fresh or stale). Returns null if no cached summary exists.
+- **`isStale(filePath)`**: Checks if a cached summary for a given file is stale by comparing its hash with the current file's hash.
+- **`generateTransientSummary(filePath)`**: Generates a summary for a file using an LLM without attempting to read from or write to the cache. This is useful for one-off summaries that don't need persistence.
+
+It ensures all file operations are within the defined project root for security.
+
+This module depends on:
+- `fs/promises` and `path` for file system operations.
+- `fs/hash.js` for calculating file hashes.
+- `fs/layout.js` for determining summary file paths.
+- `fs/readWrite.js` for reading and writing summary files to disk.
+- `summarizer/index.js` for the LLM-based summary generation.
+- `types/summary.js` for the `SummaryResult` type definition.
